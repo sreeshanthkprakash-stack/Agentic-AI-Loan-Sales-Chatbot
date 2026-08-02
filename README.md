@@ -1,168 +1,272 @@
-﻿# Agentic AI Loan Sales Chatbot
+# 🤖 Autonomous Agentic AI Loan Sales & Processing Platform
 
-A multi-agent AI system based on RAG and based on Langraph-framework.
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Orchestrator-FF6F00?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/langgraph)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-1.5%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-This project implements a Hybrid AI Architecture combining the flexibility of Large Language Models (Google Gemini) with the reliability of deterministic code (Python/SQL). It orchestrates a team of specialized "Worker Agents" to handle sales with implemented webscrapper to feed relaible data to the LLM so it will be reliable to use, identity verification, risk underwriting, document processing, and sanction letter generation.
+> An enterprise-grade, multi-agent autonomous loan application, sales, and underwriting system. Combining the flexible conversational capabilities of **Google Gemini 1.5 Flash** with deterministic Python microservices, **LangGraph** orchestration, **Tesseract OCR** document intelligence, and dynamic web scrapers for live scheme discovery.
 
-# Key Features
+---
 
-Intelligent Orchestration: Uses LangGraph to manage conversation state, memory, and tool execution.
+## 🌟 Key Highlights & Architecture Features
 
-Document Intelligence: A dedicated DocProcessor Agent uses OCR (Tesseract) and LLMs to extract data from uploaded KYC documents and Salary Slips automatically.
+- 🧠 **Intelligent Master Orchestration (LangGraph)**  
+  Uses a centralized state machine with state checkpointing (`checkpointer.sqlite`) to track user context, evaluate intents, and dynamically route execution across worker agent microservices.
 
-Risk-Based Underwriting: A sophisticated underwriting engine that adjusts interest rates and tenures dynamically based on credit scores (CIBIL logic).
+- 📄 **Document Intelligence & OCR Engine**  
+  Dedicated **DocProcessor Agent** leverages **Tesseract OCR**, **PyMuPDF**, and **Pillow** to parse uploaded KYC documents (PAN, Aadhaar) and salary slips, extracting structured personal and financial details automatically.
 
-# Robust Data Persistence:
+- 📊 **Dynamic Risk-Based Underwriting Engine**  
+  Automates credit risk evaluation by fetching real-time/mock CIBIL scores, applying dynamic interest rate tiering, evaluating EMI-to-income ratios, and generating instant loan approvals or rejections.
 
-PostgreSQL: Stores customer profiles, loan application status, and structural relational data.
+- 🌐 **Hybrid Sales & Grounded Scheme Knowledge**  
+  Combines pre-approved offer lookup with Google Gemini RAG grounded by **Scrapy & Selenium** web scrapers to provide real-time information on government financial schemes (e.g., *JanSamarth*) and customized loan options.
 
-MongoDB: Archives complete chat transcripts and loan lifecycle events for auditing.
+- 📝 **Automated PDF Sanction Letter Generation**  
+  Generates legally structured, customizable PDF Sanction Letters on loan approval using `FPDF` and saves them for user download.
 
-Hybrid Sales Agent: Checks for pre-approved offers first, then falls back to an LLM with search grounding to answer general financial queries.
+- 🗄️ **Dual Data Persistence Model**  
+  - **PostgreSQL**: Stores relational domain entities (customers, loan applications, status tracking, and interest options).  
+  - **MongoDB**: Archives full chat transcripts, step-by-step agent telemetry, and system events for complete audit compliance.
 
-PDF Generation: Automatically generates and saves legally formatted Sanction Letters.
+- 💻 **Dual Modern Web Portals**  
+  - **FinTrust Customer Portal**: High-conversion, responsive conversational chat UI for prospective borrowers.  
+  - **LoanAI Admin Portal**: Command center dashboard for loan officers to review leads, audit agent decisions, and monitor applications.
 
-# Tech Stack
+---
 
-Language: Python 3.11+
+## 🏗️ System Architecture
 
-Orchestration: LangGraph, LangChain
+```mermaid
+flowchart TB
+    subgraph Frontends["Frontend Layer"]
+        UI["FinTrust Customer Portal\n(React + Tailwind)"]
+        ADMIN["LoanAI Admin Dashboard\n(React + Tailwind)"]
+    end
 
-LLM: Google Gemini 1.5 Flash
+    subgraph Orchestrator["Orchestration Engine (Port 8000)"]
+        MASTER["Master Agent (LangGraph)\n[State Checkpointer]"]
+    end
 
-Backend Framework: FastAPI (Microservices approach)
+    subgraph Workers["Specialized Worker Microservices"]
+        SALES["Sales Agent\n(Port 8001)\n[RAG + Grounded LLM]"]
+        VERIF["Verification Agent\n(Port 8002)\n[KYC Validation]"]
+        UNDER["Underwriting Agent\n(Port 8003)\n[Risk & EMI Engine]"]
+        SANCT["Sanction Generator\n(Port 8004)\n[PDF & Transcripts]"]
+        DOC["Doc Processor Agent\n(Port 8005)\n[OCR & Data Extraction]"]
+    end
 
-Databases: PostgreSQL (Relational), MongoDB (NoSQL)
+    subgraph EnterpriseMocks["Enterprise Mock Services"]
+        CRM["Mock CRM Service\n(Port 9001)"]
+        BUREAU["Mock Credit Bureau\n(Port 9002)"]
+        OFFER["Mock Offer Mart\n(Port 9003)"]
+    end
 
-Document Processing: PyMuPDF, Pytesseract, Pillow
+    subgraph KnowledgeScraper["Scraper & Data Pipeline"]
+        SCRAP["Scrapy & Selenium\n(JanSamarth Scraper)"]
+        JSON_KB[("Scheme Knowledge Base\n(JSON Dump)")]
+    end
 
-Frontend: HTML/JS/TailwindCSS (Responsive Chat UI)
+    subgraph DataStore["Persistence Layer"]
+        PG[("PostgreSQL\n(Relational Data)")]
+        MONGO[("MongoDB\n(Chat Audit Logs)")]
+    end
 
-# Architecture Overview
+    %% Connections
+    UI <--> MASTER
+    ADMIN <--> PG & MONGO
+    MASTER <--> SALES & VERIF & UNDER & SANCT & DOC
 
-The system consists of Master Agent (The Brain) and 5 Specialized Worker Agents running on different ports:
-Master Agent:The LangGraph orchestrator. Manages user intent and routes tasks.
-Sales Agent:Handles offers and general queries.
-Verification:Validates customer identity against mock APIs.
-Underwriting:Calculates risk, EMI, and approves/rejects loans.
-Sanction:Generates PDF letters and archives chat history to MongoDB.
-DocProcessor:Extracts text/data from uploaded files (OCR/LLM).
-Plus 3 Mock Services for CRM, Credit Bureau, and Offer Mart 
+    SALES --> JSON_KB
+    SCRAP --> JSON_KB
 
-# Installation & Setup
+    VERIF <--> CRM
+    UNDER <--> BUREAU
+    SALES <--> OFFER
 
-1. Clone the Repository
-```bash
-
-git clone https://github.com/ shreeshbhat04-ctrl/Agent-AI-for-loan-scheme-generation
-
-cd agent-ai-loan-chatbot
-```
- 
-2. Prerequisites
-
-Ensure you have the following installed:
-```bash
-Python 3.10+
-PostgreSQL 
-MongoDB 
-Tesseract OCR (Required for document processing. Download here)
-```
-
-3. Environment Setup (Backend)
-
-Navigate to the backend directory and set up the virtual environment:
-```bash
-cd backend
-python -m venv venv
-
-# Activate venv:
-# Windows:
-.\venv\Scripts\Activate
-# Mac/Linux:
-source venv/bin/activate
-```
-
-4. Install Dependencies
-
-Install all requirements for all agents at once:
-```bash
-pip install -r requirements.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
-```
-
-5. Database Configuration
-
-Create a PostgreSQL database named loan_chatbot_db.
-
-Run the setup script to create tables (customers, loans, chat_messages) and seed dummy data:
-```bash
-cd db
-python setup_postgres_db.py
+    MASTER <--> PG
+    SANCT --> MONGO
 ```
 
-6. Environment Variables
+---
 
-Create a .env file in the backend/ directory:
+## 🧩 Microservices Ecosystem & Port Registry
 
+The platform runs as a microservices cluster where each component handles a focused domain responsibility:
+
+| Service Name | Port | Base Framework | Primary Responsibility |
+| :--- | :---: | :---: | :--- |
+| **Master Agent** | `8000` | FastAPI / LangGraph | Orchestrates conversation flow, state routing, and worker invocation. |
+| **Sales Agent** | `8001` | FastAPI / Gemini | Matches pre-approved offers & answers queries grounded in scheme data. |
+| **Verification Agent** | `8002` | FastAPI | Validates customer identity against CRM registries. |
+| **Underwriting Agent** | `8003` | FastAPI | Computes risk tiering, interest rates, EMI eligibility, and approval status. |
+| **Sanction Generator** | `8004` | FastAPI / FPDF | Generates PDF sanction letters and pushes chat logs to MongoDB. |
+| **Doc Processor** | `8005` | FastAPI / Tesseract | Performs OCR on uploaded KYC documents and salary slips. |
+| **Mock CRM** | `9001` | FastAPI | Simulates core banking customer demographic records. |
+| **Mock Credit Bureau** | `9002` | FastAPI | Simulates credit scoring agencies (e.g., CIBIL scores). |
+| **Mock Offer Mart** | `9003` | FastAPI | Provides active promotional loan limits and rate matrices. |
+
+---
+
+## 📁 Repository Structure
+
+```text
+Agent-AI-for-loan-scheme-generation/
+├── backend/
+│   ├── agents/
+│   │   ├── doc_processor/          # OCR text extraction engine (Tesseract/PyMuPDF)
+│   │   ├── sales_agent/            # LLM sales advice & RAG scheme lookup
+│   │   ├── sanction_generator/     # PDF Sanction Letter builder & Mongo logger
+│   │   ├── underwriting_agent/     # CIBIL risk calculation & approval engine
+│   │   └── verification_agent/     # Identity verification microservice
+│   ├── db/
+│   │   └── setup_postgres_db.py    # PostgreSQL table migration & seed script
+│   ├── master_agent/               # LangGraph orchestrator & state machine
+│   ├── mock_services/              # Mock CRM, Credit Bureau & Offer Mart APIs
+│   ├── scrappers/                  # Scrapy/Selenium web scrapers for schemes
+│   │   └── data/                   # Scraped scheme knowledge base JSONs
+│   ├── requirements.txt            # Python dependency specifications
+│   └── run_all.ps1                 # PowerShell multi-service launch script
+├── frontend/
+│   ├── loanai-admin-portal/        # Admin operations dashboard (React + Vite)
+│   └── UI/
+│       └── fintrust-portal/        # Borrower-facing chat & application portal
+└── README.md                       # System documentation
+```
+
+---
+
+## 🛠️ Installation & Prerequisites
+
+### 1. System Requirements
+Before running the application, ensure the following are installed on your system:
+- **Python**: `v3.10` or higher (Python 3.11 recommended)
+- **Node.js**: `v18` or higher (with `npm` or `bun`)
+- **PostgreSQL**: `v14` or higher
+- **MongoDB**: `v6.0` or higher
+- **Tesseract OCR Engine**:
+  - **Windows**: Download installer from [UB-Mannheim Tesseract](https://github.com/UB-Mannheim/tesseract/wiki) and add to path (e.g., `C:\Program Files\Tesseract-OCR\tesseract.exe`).
+  - **Linux/Mac**: `sudo apt install tesseract-ocr` or `brew install tesseract`.
+
+---
+
+### 2. Backend Setup
+
+1. **Navigate to the backend directory and create a Python virtual environment:**
+   ```bash
+   cd backend
+   python -m venv venv
+   ```
+
+2. **Activate the virtual environment:**
+   - **Windows (PowerShell):**
+     ```powershell
+     .\venv\Scripts\Activate.ps1
+     ```
+   - **Linux / macOS:**
+     ```bash
+     source venv/bin/activate
+     ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+### 3. Database Initialization
+
+1. Start your local **PostgreSQL** and **MongoDB** instances.
+2. Create a PostgreSQL database named `loan_chatbot_db`.
+3. Run the database migration script to construct tables (`customers`, `loans`, `chat_messages`) and seed initial dummy records:
+   ```bash
+   cd backend/db
+   python setup_postgres_db.py
+   ```
+
+---
+
+### 4. Environment Variables Configuration
+
+Create a `.env` file inside `backend/` (and inside individual agent folders if needed):
+
+```env
+# Google Gemini AI Key
 GOOGLE_API_KEY=your_gemini_api_key_here
+
+# PostgreSQL Database Configuration
 DB_NAME=loan_chatbot_db
 DB_USER=postgres
-DB_PASSWORD=your_db_password
+DB_PASSWORD=your_postgres_password
 DB_HOST=localhost
 DB_PORT=5432
+
+# MongoDB URI Configuration
 MONGO_URI=mongodb://localhost:27017/
-# Path to Tesseract executable (Windows example)
+
+# Tesseract Executable Path (Windows example)
 TESSERACT_CMD=C:/Program Files/Tesseract-OCR/tesseract.exe
+```
 
+---
 
- # How to Run
+## 🚀 Running the Platform
 
-Since this is a microservices architecture, you need to run the agents simultaneously.
-
- Using the PowerShell Script (Windows)
-Run the provided helper script from the backend/ folder:
-```bash
+### Option A: Launch All Backend Services Automatically (Windows)
+Run the provided PowerShell startup script from the `backend/` folder to spawn all 9 microservices simultaneously in distinct windows:
+```powershell
+cd backend
 .\run_all.ps1
 ```
-# Launch Frontend
 
-Install npm packages for both admin and user side:
-```bash
-cd frontend
-cd loanai-admin-portal
-npm install
-npm run dev
+### Option B: Launch Frontends
+
+1. **Launch FinTrust Customer Portal:**
+   ```bash
+   cd frontend/UI/fintrust-portal
+   npm install
+   npm run dev
+   ```
+   *Access the customer chat UI at `http://localhost:5173`*
+
+2. **Launch LoanAI Admin Portal:**
+   ```bash
+   cd frontend/loanai-admin-portal
+   npm install
+   npm run dev
+   ```
+   *Access the admin dashboard at `http://localhost:5174`*
+
+---
+
+## 🔄 End-to-End Application Workflow
+
+```text
+  1. USER INQUIRY ────────► Master Agent receives query via FinTrust Portal.
+  2. SALES & SCHEMES ─────► Sales Agent returns pre-approved offer or scraped scheme info.
+  3. VERIFICATION ────────► Verification Agent validates PAN / Aadhaar with Mock CRM.
+  4. DOC PROCESSING ──────► DocProcessor Agent extracts salary & KYC details via Tesseract OCR.
+  5. UNDERWRITING ────────► Underwriting Agent fetches credit score, checks EMI ratio & decides loan approval.
+  6. SANCTION & AUDIT ────► Sanction Generator creates PDF letter & archives chat logs to MongoDB.
 ```
-```bash
-#then in UI
-cd UI
-cd fintrust-portal
-npm install
-npm run dev
-```
 
+---
 
-# Future Developments
+## 🔮 Future Roadmap
 
-The current system is a robust prototype.Future advancements are:
+- 🗣️ **Multilingual Support (Bhashini / Vernacular AI)**: Native integration for regional Indian languages (Hindi, Tamil, Kannada, Marathi) translating real-time dialogue.
+- 🎙️ **Voice-to-Apply (Whisper STT + TTS)**: Speech interaction allowing users to complete end-to-end applications hands-free.
+- 🤖 **Automated Web RPA (Selenium / Puppeteer Agents)**: Robotic Process Automation to assist users in auto-filling government loan applications on portals like *JanSamarth*.
 
-1. Multilingual Support (Bhashini Integration)
+---
 
-Goal: Allow users to chat in regional languages (Hindi, Tamil, Kannada, etc.).
+## 📄 License & Acknowledgments
 
-Implementation: Integrate AI translation layers (like Google Translate API or Bhashini) at the entry and exit points of the Master Agent. The core logic remains in English, but the user interface becomes vernacular.
-
-2. Voice-Enabled Interaction
-
-Goal: Enable a "Talk to Apply" feature for better accessibility.
-
-Implementation: Add Speech-to-Text (STT) (e.g., OpenAI Whisper) to convert voice notes to text for the Master Agent, and Text-to-Speech (TTS) (e.g., ElevenLabs or Google TTS) to read the agent's responses back to the user.
-
-3.  Automated Web Direction (RPA)
-
-Goal: Assist users with filling out government portal forms (like JanSamarth) automatically.
-
-Implementation: Create a new "Navigator Agent" using tools like Selenium or Puppeteer. Once the user provides their details to the chatbot, this agent would physically navigate to the internal and external website and auto-fill the application forms, reducing manual effort.
-
-
-
+Distributed under the **MIT License**. See `LICENSE` for details.  
+*Built with ❤️ using LangGraph, Google Gemini, FastAPI, and React.*
