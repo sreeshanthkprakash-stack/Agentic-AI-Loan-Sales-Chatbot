@@ -8,7 +8,7 @@ langgraph>=0.2.0
 
 # Google Gemini integration - Latest version (3.2.0 as of Nov 2025)
 # Works with langchain-core 1.1.1+ via compatibility shim in main.py
-langchain-google-genai>=3.2.0
+langchain-google-genai>=4.3.2
 
 # New Google Gen AI SDK (recommended by Google over old SDK)
 google-genai>=1.19.0
