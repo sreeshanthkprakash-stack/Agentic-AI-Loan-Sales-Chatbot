@@ -292,6 +292,7 @@ async def tool_verify_salary_document(customer_id: str, file_path: str) -> dict:
         logger.error(f"Salary verification error: {e}")
         return {"status": "failed", "error": str(e)}
 
+#this is to reject the files
 @tool
 async def tool_archive_rejection(
     customer_id: str,
